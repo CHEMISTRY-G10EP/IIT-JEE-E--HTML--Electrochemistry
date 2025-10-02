@@ -109,7 +109,16 @@
 <script>
 
 
-const Q = [
+const Q = window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)'], ['$', '$']], 
+    displayMath: [['$$','$$'], ['\\[','\\]']],
+    processEscapes: true
+  },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+};
+
+const quiz = [
   {
     "id": "q1",
     "text": "The transport number (or transference number) of an ion is defined as:",
@@ -120,11 +129,11 @@ const Q = [
       "The conductivity of the ion"
     ],
     "correct": "A",
-    "solution": "Transport number (t⁺ or t⁻) is the fraction of total current carried by a particular ion in an electrolyte."
+    "solution": "Transport number \\((t^+ \\text{ or } t^-)\\) is the fraction of total current carried by a particular ion in an electrolyte."
   },
   {
     "id": "q2",
-    "text": "If t⁺ = 0.4 for a cation, the anion's transport number t⁻ is:",
+    "text": "If \\(t^+ = 0.4\\) for a cation, the anion's transport number \\(t^-\\) is:",
     "options": [
       "0.4",
       "0.6",
@@ -132,7 +141,7 @@ const Q = [
       "0.0"
     ],
     "correct": "B",
-    "solution": "For binary electrolytes, t⁺ + t⁻ = 1. So t⁻ = 1 - 0.4 = 0.6."
+    "solution": "For binary electrolytes, \\(t^+ + t^- = 1\\). So, \\(t^- = 1 - 0.4 = 0.6\\)."
   },
   {
     "id": "q3",
@@ -148,7 +157,7 @@ const Q = [
   },
   {
     "id": "q4",
-    "text": "Numerical: In electrolysis of AgNO₃, 0.002 mol of Ag⁺ deposits carrying 0.3 fraction of current. Calculate transport number of Ag⁺.",
+    "text": "Numerical: In electrolysis of \\(AgNO_3\\), 0.002 mol of \\(Ag^+\\) deposits carrying 0.3 fraction of current. Calculate transport number of \\(Ag^+\\).",
     "options": [
       "0.3",
       "0.7",
@@ -156,7 +165,7 @@ const Q = [
       "0.6"
     ],
     "correct": "A",
-    "solution": "Transport number t⁺ = fraction of current carried by cation = 0.3."
+    "solution": "Transport number \\(t^+ =\\) fraction of current carried by cation = 0.3."
   },
   {
     "id": "q5",
@@ -184,7 +193,7 @@ const Q = [
   },
   {
     "id": "q7",
-    "text": "Numerical: In HCl solution, t⁺ = 0.36, t⁻ = 0.64. If current is 2 A, what current is carried by Cl⁻ ions?",
+    "text": "Numerical: In \\(HCl\\) solution, \\(t^+ = 0.36, t^- = 0.64\\). If current is 2 A, what current is carried by \\(Cl^-\\) ions?",
     "options": [
       "0.36 A",
       "0.64 A",
@@ -192,7 +201,7 @@ const Q = [
       "2 A"
     ],
     "correct": "B",
-    "solution": "Current carried by Cl⁻: I⁻ = t⁻ × I = 0.64 × 2 = 1.28 A."
+    "solution": "Current carried by \\(Cl^-\\): \\(I^- = t^- \\times I = 0.64 \\times 2 = 1.28 \\, A\\)."
   },
   {
     "id": "q8",
@@ -204,7 +213,7 @@ const Q = [
       "Transport numbers are always 0.5"
     ],
     "correct": "B",
-    "solution": "In dilute solutions, t⁺ and t⁻ depend on the mobilities of cation and anion."
+    "solution": "In dilute solutions, \\(t^+\\) and \\(t^-\\) depend on the mobilities of cation and anion."
   },
   {
     "id": "q9",
@@ -220,7 +229,7 @@ const Q = [
   },
   {
     "id": "q10",
-    "text": "Transport number t⁺ of cation is related to its mobility u⁺ and anion's mobility u⁻ as:",
+    "text": "Transport number \\(t^+\\) of cation is related to its mobility \\(u^+\\) and anion's mobility \\(u^-\\) as:",
     "options": [
       "t⁺ = u⁺ / (u⁺ + u⁻)",
       "t⁺ = u⁻ / (u⁺ + u⁻)",
@@ -228,11 +237,11 @@ const Q = [
       "t⁺ = u⁺ − u⁻"
     ],
     "correct": "A",
-    "solution": "t⁺ = u⁺ / (u⁺ + u⁻), t⁻ = u⁻ / (u⁺ + u⁻) (for binary electrolytes)."
+    "solution": "\\(t^+ = \\frac{u^+}{u^+ + u^-}, \\quad t^- = \\frac{u^-}{u^+ + u^-}\\) for binary electrolytes."
   },
   {
     "id": "q11",
-    "text": "Numerical: HCl solution has u⁺ = 3.62 × 10⁻³ cm² V⁻¹ s⁻¹, u⁻ = 7.91 × 10⁻³ cm² V⁻¹ s⁻¹. Calculate t⁺.",
+    "text": "Numerical: \\(HCl\\) solution has \\(u^+ = 3.62 \\times 10^{-3}\\, cm^2 V^{-1} s^{-1}, u^- = 7.91 \\times 10^{-3}\\, cm^2 V^{-1} s^{-1}\\). Calculate \\(t^+\\).",
     "options": [
       "0.31",
       "0.42",
@@ -240,7 +249,7 @@ const Q = [
       "0.62"
     ],
     "correct": "A",
-    "solution": "t⁺ = u⁺ / (u⁺ + u⁻) = 3.62 / (3.62 + 7.91) ≈ 0.314 ≈ 0.31."
+    "solution": "\\(t^+ = \\frac{u^+}{u^+ + u^-} = \\frac{3.62}{3.62 + 7.91} \\approx 0.314 \\approx 0.31\\)."
   },
   {
     "id": "q12",
@@ -252,7 +261,7 @@ const Q = [
       "t⁺ = t⁻ always"
     ],
     "correct": "C",
-    "solution": "For binary electrolytes, t⁺ + t⁻ = 1. However, t⁺ and t⁻ vary with concentration due to ion interactions."
+    "solution": "For binary electrolytes, \\(t^+ + t^- = 1\\). However, \\(t^+\\) and \\(t^-\\) vary with concentration due to ion interactions."
   },
   {
     "id": "q13",
@@ -264,11 +273,11 @@ const Q = [
       "Color of ions"
     ],
     "correct": "B",
-    "solution": "Ion mobility and size determine how much current each ion carries, affecting t⁺ and t⁻."
+    "solution": "Ion mobility and size determine how much current each ion carries, affecting \\(t^+\\) and \\(t^-\\)."
   },
   {
     "id": "q14",
-    "text": "Numerical: In electrolysis of CuSO₄, t⁺ for Cu²⁺ = 0.34, t⁻ for SO₄²⁻ = 0.66. If total current is 1.5 A, current carried by Cu²⁺ is:",
+    "text": "Numerical: In electrolysis of \\(CuSO_4\\), \\(t^+\\) for \\(Cu^{2+}\\) = 0.34, \\(t^-\\) for \\(SO_4^{2-}\\) = 0.66. If total current is 1.5 A, current carried by \\(Cu^{2+}\\) is:",
     "options": [
       "0.51 A",
       "0.66 A",
@@ -276,7 +285,7 @@ const Q = [
       "0.34 A"
     ],
     "correct": "A",
-    "solution": "Current carried by Cu²⁺: I⁺ = t⁺ × I = 0.34 × 1.5 = 0.51 A."
+    "solution": "Current carried by \\(Cu^{2+}\\): \\(I^+ = t^+ \\times I = 0.34 \\times 1.5 = 0.51 \\, A\\)."
   },
   {
     "id": "q15",
@@ -290,9 +299,8 @@ const Q = [
     "correct": "B",
     "solution": "High mobility ion carries larger fraction of current → higher transport number. Low mobility counterion reduces its share."
   }
-]
+];
 
-;
 
 
 
@@ -609,3 +617,4 @@ sendReport.onclick = () => {
 
 </body>
 </html>
+
