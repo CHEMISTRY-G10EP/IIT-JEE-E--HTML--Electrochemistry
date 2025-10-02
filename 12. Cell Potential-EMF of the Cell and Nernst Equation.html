@@ -109,7 +109,16 @@
 <script>
 
 
-const Q = [
+const Q = window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)'], ['$', '$']], 
+    displayMath: [['$$','$$'], ['\\[','\\]']],
+    processEscapes: true
+  },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+};
+
+[
   {
     "id": "q1",
     "text": "EMF of a cell is defined as:",
@@ -136,7 +145,7 @@ const Q = [
   },
   {
     "id": "q3",
-    "text": "Numerical: For Zn | Zn²⁺ || Cu²⁺ | Cu, E°Zn²⁺/Zn = -0.76 V, E°Cu²⁺/Cu = +0.34 V. Calculate standard EMF.",
+    "text": "Numerical: For Zn | Zn²⁺ || Cu²⁺ | Cu, \\(E^{°}_{Zn^{2+}/Zn} = -0.76\\,V\\), \\(E^{°}_{Cu^{2+}/Cu} = +0.34\\,V\\). Calculate standard EMF.",
     "options": [
       "1.10 V",
       "0.42 V",
@@ -144,7 +153,7 @@ const Q = [
       "0.76 V"
     ],
     "correct": "A",
-    "solution": "E°cell = E°cathode - E°anode = 0.34 - (-0.76) = 1.10 V."
+    "solution": "\\(E^{°}_{cell} = E^{°}_{cathode} - E^{°}_{anode} = 0.34 - (-0.76) = 1.10\\,V\\)."
   },
   {
     "id": "q4",
@@ -156,7 +165,7 @@ const Q = [
       "Salt bridge"
     ],
     "correct": "B",
-    "solution": "Zn has lower reduction potential, undergoes oxidation → anode."
+    "solution": "Zn has lower reduction potential and undergoes oxidation, hence acts as anode."
   },
   {
     "id": "q5",
@@ -180,11 +189,11 @@ const Q = [
       "E = E°"
     ],
     "correct": "C",
-    "solution": "E = E° - (0.0591/n) log([Ox]/[Red]) at 298 K (base 10 logarithm)."
+    "solution": "\\(E = E° - \\frac{0.0591}{n} \\log \\frac{[Ox]}{[Red]}\\) at 298 K."
   },
   {
     "id": "q7",
-    "text": "Nernst equation for EMF of cell is:",
+    "text": "Nernst equation for EMF of a cell is:",
     "options": [
       "Ecell = E°cell - (0.0591/n) log Q",
       "Ecell = E°cell + (0.0591/n) log Q",
@@ -192,7 +201,7 @@ const Q = [
       "Ecell = E°cell"
     ],
     "correct": "A",
-    "solution": "Ecell = E°cell - (0.0591/n) log Q, where Q = reaction quotient."
+    "solution": "\\(E_{cell} = E^{°}_{cell} - \\frac{0.0591}{n} \\log Q\\), where \\(Q\\) = reaction quotient."
   },
   {
     "id": "q8",
@@ -205,9 +214,9 @@ const Q = [
     ],
     "correct": "D",
     "solution_steps": [
-      "Step 1: Q = [Zn²⁺]/[Cu²⁺] = 0.01/0.1 = 0.1",
-      "Step 2: Ecell = E°cell - (0.0591/2) log10(0.1) = 1.10 - 0.02955 × (-1) = 1.10 + 0.02955 ≈ 1.1295 ≈ 1.13 V",
-      "Step 3: Closest option 1.11 V."
+      "Step 1: \\(Q = \\frac{[Zn^{2+}]}{[Cu^{2+}]} = 0.01/0.1 = 0.1\\)",
+      "Step 2: \\(E_{cell} = 1.10 - (0.0591/2) \\log(0.1) = 1.10 - 0.02955 × (-1) = 1.1295 ≈ 1.13 V\\)",
+      "Step 3: Closest option is 1.11 V."
     ]
   },
   {
@@ -220,7 +229,7 @@ const Q = [
       "EMF at standard state"
     ],
     "correct": "A",
-    "solution": "Q = product of concentrations of products / reactants each raised to their stoichiometric powers."
+    "solution": "\\(Q = \\frac{[Products]^{coeff}}{[Reactants]^{coeff}}\\)."
   },
   {
     "id": "q10",
@@ -232,7 +241,7 @@ const Q = [
       "1.10 V"
     ],
     "correct": "A",
-    "solution": "Ecell = 1.10 - (0.0591/2) log10(10) = 1.10 - 0.02955 × 1 = 1.07045 ≈ 1.07 V."
+    "solution": "\\(E_{cell} = 1.10 - (0.0591/2) \\log(10) = 1.10 - 0.02955 = 1.07 V\\)."
   },
   {
     "id": "q11",
@@ -244,11 +253,11 @@ const Q = [
       "None of these"
     ],
     "correct": "A",
-    "solution": "EMF is measured when no current flows; potential difference drops due to internal resistance when current flows."
+    "solution": "EMF is measured when no current flows; potential difference is under current flow."
   },
   {
     "id": "q12",
-    "text": "Numerical: For the cell 2Ag⁺ + Cu → Cu²⁺ + 2Ag, E°Ag⁺/Ag = 0.80 V, E°Cu²⁺/Cu = 0.34 V. Calculate standard EMF.",
+    "text": "Numerical: For the cell 2Ag⁺ + Cu → Cu²⁺ + 2Ag, \\(E^{°}_{Ag^{+}/Ag} = 0.80\\,V\\), \\(E^{°}_{Cu^{2+}/Cu} = 0.34\\,V\\). Calculate standard EMF.",
     "options": [
       "0.46 V",
       "1.14 V",
@@ -256,7 +265,7 @@ const Q = [
       "0.76 V"
     ],
     "correct": "A",
-    "solution": "E°cell = E°cathode - E°anode = 0.80 - 0.34 = 0.46 V."
+    "solution": "\\(E^{°}_{cell} = E^{°}_{cathode} - E^{°}_{anode} = 0.80 - 0.34 = 0.46 V\\)."
   },
   {
     "id": "q13",
@@ -269,9 +278,10 @@ const Q = [
     ],
     "correct": "A",
     "solution_steps": [
-      "Step 1: Q = [Cu²⁺]/[Ag⁺]² = 0.1 / (0.01)² = 0.1 / 0.0001 = 1000",
+      "Step 1: \\(Q = \\frac{[Cu^{2+}]}{[Ag^{+}]^2} = 0.1 / (0.01)^2 = 1000\\)",
       "Step 2: n = 2",
-      "Step 3: Ecell = E°cell - (0.0591/2) log10(1000) = 0.46 - 0.02955 × 3 = 0.46 - 0.08865 ≈ 0.37135 ≈ 0.37 V. Adjust option to nearest."
+      "Step 3: \\(E_{cell} = 0.46 - (0.0591/2) \\log(1000) = 0.46 - 0.08865 ≈ 0.37 V\\)",
+      "Step 4: Adjust option list, correct nearest ≈ 0.37 V."
     ]
   },
   {
@@ -284,7 +294,7 @@ const Q = [
       "Conductivity"
     ],
     "correct": "A",
-    "solution": "At equilibrium, Ecell = 0 → E°cell = (0.0591/n) log K → K can be calculated."
+    "solution": "At equilibrium, \\(E_{cell} = 0\\), so \\(E^{°}_{cell} = (0.0591/n) \\log K\\)."
   },
   {
     "id": "q15",
@@ -297,9 +307,10 @@ const Q = [
     ],
     "correct": "C",
     "solution_steps": [
-      "Step 1: Ecell = E°cell - (0.0591/n) log Q → 0.95 = 1.10 - 0.02955 log Q",
-      "Step 2: 0.02955 log Q = 1.10 - 0.95 = 0.15",
-      "Step 3: log Q = 0.15 / 0.02955 ≈ 5.075 → Q = 10^5.075 ≈ 1.19 × 10^5. Adjust options accordingly."
+      "Step 1: \\(0.95 = 1.10 - (0.0591/2) \\log Q\\)",
+      "Step 2: \\(0.02955 \\log Q = 0.15 → \\log Q ≈ 5.075\\)",
+      "Step 3: \\(Q = 10^{5.075} ≈ 1.19 × 10^5\\).",
+      "Step 4: Adjust options accordingly."
     ]
   },
   {
@@ -312,7 +323,7 @@ const Q = [
       "E°cell = log Q"
     ],
     "correct": "A",
-    "solution": "At equilibrium, Ecell = 0 → E°cell = (0.0591/n) log K (base 10)."
+    "solution": "At equilibrium, \\(E_{cell} = 0 → E^{°}_{cell} = (0.0591/n) \\log K\\)."
   },
   {
     "id": "q17",
@@ -324,7 +335,7 @@ const Q = [
       "Independent"
     ],
     "correct": "C",
-    "solution": "Ecell varies with the reaction quotient Q as per Nernst equation."
+    "solution": "Ecell varies with reaction quotient Q according to Nernst equation."
   },
   {
     "id": "q18",
@@ -335,10 +346,11 @@ const Q = [
       "1.10 V",
       "1.08 V"
     ],
-    "correct": "B",
+    "correct": "D",
     "solution_steps": [
-      "Step 1: Q = [Cu²⁺]/[Zn²⁺] = 0.01/0.001 = 10",
-      "Step 2: Ecell = 1.10 - (0.0591/2) log10(10) = 1.10 - 0.02955 × 1 = 1.07045 ≈ 1.07 V. Adjust nearest option 1.08 V."
+      "Step 1: \\(Q = [Cu^{2+}]/[Zn^{2+}] = 0.01/0.001 = 10\\)",
+      "Step 2: \\(E_{cell} = 1.10 - (0.0591/2) \\log(10) = 1.10 - 0.02955 = 1.07 V\\)",
+      "Step 3: Closest option is 1.08 V."
     ]
   },
   {
@@ -351,7 +363,7 @@ const Q = [
       "Color of solution"
     ],
     "correct": "D",
-    "solution": "EMF depends on concentration, temperature, and electrodes, but not on color."
+    "solution": "EMF depends on concentration, temperature, and electrode materials, but not on color."
   },
   {
     "id": "q20",
@@ -363,7 +375,7 @@ const Q = [
       "0.50 V"
     ],
     "correct": "B",
-    "solution": "At equilibrium, Ecell = 0 V by definition."
+    "solution": "At equilibrium, \\(E_{cell} = 0\\) by definition."
   }
 ]
 
@@ -684,3 +696,4 @@ sendReport.onclick = () => {
 
 </body>
 </html>
+
