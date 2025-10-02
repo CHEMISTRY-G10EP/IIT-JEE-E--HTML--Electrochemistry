@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  
+  
+  <title> Quiz – 2. Faraday’s laws of electrolysis</title>
+  
+  
+  <style>
+    body{font-family:Arial, sans-serif;padding:20px;background:#121212;color:#f0f0f0;}
+    #logo{display:block;margin:0 auto 25px;max-width:180px;}
+    #name-container{background:#1e1e1e;padding:30px;border-radius:6px;max-width:420px;margin:0 auto;}
+    #name-container input{width:100%;padding:10px;margin:10px 0 15px;border:none;border-radius:4px;font-size:16px;}
+    #quiz-container{display:none;}
+    .question{border:1px solid #333;padding:15px;margin-bottom:20px;border-radius:5px;background:#1e1e1e;}
+    .question h3{margin:0 0 10px;}
+    .option-item { display: flex; align-items: center; gap: 8px; margin: 6px 0; padding: 6px 8px; border-radius: 4px; background: #2a2a2a; color: #ccc; cursor: pointer; }
+    .option-item input[type="radio"] { margin: 0; }
+    .submit-button,.toggle-button,.dontknow-button{margin-top:10px;padding:6px 12px;background:#007BFF;color:#fff;border:none;border-radius:4px;cursor:pointer;margin-right:5px;}
+    .solution{display:none;margin-top:10px;background:#2d2d2d;padding:10px;border-left:4px solid #28a745;}
+    #scorecard{background:#2d2d2d;padding:15px;border-radius:6px;margin-top:30px;display:none;}
+    #timer{font-weight:bold;color:#00ffcc;}
+    #studentPrintName{text-align:center;font-size:18px;font-weight:bold;margin-top:-15px;margin-bottom:5px;display:none;}
+    #examDateTime{text-align:center;font-size:14px;margin-bottom:20px;display:none;}
+    @media print {
+      body { background: #fff; color:#000; }
+      .submit-button, .dontknow-button, .toggle-button, #reportBtn, #reportModal { display:none !important; }
+      #name-container { display:none !important; }
+    }
+    #reportBtn { position: fixed; bottom: 20px; right: 20px; background: #ff4757; color: white; border: none; padding: 12px 18px; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0px 4px 10px rgba(0,0,0,0.3); z-index: 1000; }
+    #reportModal { display: none; position: fixed; bottom: 80px; right: 20px; background: #1e1e1e; border: 1px solid #444; padding: 15px; border-radius: 8px; width: 260px; z-index: 1001; }
+    #reportModal textarea { width: 100%; height: 80px; padding: 8px; border: none; border-radius: 4px; resize: none; font-size: 14px; }
+    #reportModal button { margin-top: 10px; padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    #sendReport { background: #28a745; color: white; }
+    #closeReport { background: #dc3545; color: white; margin-left: 5px; }
+  </style>
+
+  <!-- MathJax Configuration -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(','\\)'], ['$', '$']], 
+        displayMath: [['$$','$$'], ['\\[','\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<img id="logo" src="https://i.ibb.co/WNZTWPwv/LOGO-PNG-2025-fab.png" alt="Logo" />
+
+<div id="studentPrintName"></div>
+<div id="examDateTime"></div>
+
+<div id="name-container">
+  <h2>Enter your name to begin</h2>
+  <input type="text" id="studentNameInput" placeholder="Your Name" />
+  <button class="submit-button" onclick="startQuiz()">Start Quiz</button>
+</div>
+
+<div id="quiz-container">
+
+
+  <h2> Quiz – 2. Faraday’s laws of electrolysis</h2>
+  
+  
+  <p><strong>Time Elapsed:</strong> <span id="timer">00:00</span></p>
+  <div id="questions-container"></div>
+
+  <div style="margin-top:30px;">
+    <button class="submit-button" onclick="finalSubmit()">Final Submit</button>
+    <button class="submit-button" onclick="printQuestions()">Print Questions</button>
+    <button class="submit-button" id="printScoreBtn" onclick="printScorecard()" style="display:none;">Save or Print Scorecard</button>
+    <button class="submit-button" id="shareWhatsappBtn" style="display:none;">SHARE on WhatsApp</button>
+  </div>
+
+ <div id="scorecard">
+  <h3>Your Scorecard</h3>
+  <p id="scoreText"></p>
+  <table id="scoreTable" border="1" cellspacing="0" cellpadding="6" style="width:100%;border-collapse:collapse;margin-top:15px;">
+    <thead style="background:#333;color:#fff;">
+      <tr>
+        <th>Q.No</th>
+        <th>Question</th>
+        <th>Your Answer</th>
+        <th>Correct Answer</th>
+        <th>Result</th>
+        <th>Solution</th>
+      </tr>
+    </thead>
+    <tbody id="scoreDetails"></tbody>
+  </table>
+</div>
+
+<button id="reportBtn">Report Mistake</button>
+
+<div id="reportModal">
+  <textarea id="reportMsg" placeholder="Describe the mistake..."></textarea>
+  <div style="text-align:right;">
+    <button id="sendReport">Send</button>
+    <button id="closeReport">Close</button>
+  </div>
+</div>
+
+<script>
+
+
+const Q = [
+  {
+    "id": "q1",
+    "text": "Which statement best expresses Faraday's first law of electrolysis?",
+    "options": [
+      "Mass of substance deposited is proportional to the square of current passed",
+      "Mass of substance deposited is proportional to the quantity of electricity passed",
+      "Mass deposited is independent of current and time",
+      "Mass deposited depends only on temperature"
+    ],
+    "correct": "B",
+    "solution": "Faraday's first law: amount (mass) of substance deposited or liberated at an electrode is directly proportional to the total quantity of electricity (charge) passed through the electrolyte: \\(m \\propto Q\\)."
+  },
+  {
+    "id": "q2",
+    "text": "Faraday's second law of electrolysis states that:",
+    "options": [
+      "For the same quantity of electricity, masses of different substances deposited are proportional to their molar masses",
+      "For the same quantity of electricity, masses of different substances deposited are equal",
+      "For the same quantity of electricity, masses of different substances deposited are proportional to their equivalent weights",
+      "Mass deposited depends only on concentration"
+    ],
+    "correct": "C",
+    "solution": "Faraday's second law: when the same quantity of electricity is passed through different electrolytes, the masses of substances deposited are proportional to their equivalent weights (equivalent weight = Molar mass/valency)."
+  },
+  {
+    "id": "q3",
+    "text": "Which of the following is the correct quantitative expression for mass deposited in electrolysis?",
+    "options": [
+      "$m=\\dfrac{Q\\times M}{nF}$",
+      "$m=Q^2\\times M$",
+      "$m=\\dfrac{nF}{QM}$",
+      "$m=\\dfrac{M}{QnF}$"
+    ],
+    "correct": "A",
+    "solution": "Correct formula: \\(m=\\dfrac{Q\\,M}{nF}\\) where \\(Q\\) is charge (C), \\(M\\) molar mass (g mol⁻¹), \\(n\\) electrons transferred per formula unit, and \\(F\\) is Faraday constant (C mol⁻¹). Using \\(Q=I\\,t\\) gives \\(m=\\dfrac{I\\,t\\,M}{nF}\\)."
+  },
+  {
+    "id": "q4",
+    "text": "If a current of 2.0 A is passed through a silver nitrate solution for 1.0 hour, what mass of silver (Ag, M = 107.87 g mol⁻¹, valency = 1) will be deposited? (Use \\(F=96500\\ \\mathrm{C\\,mol^{-1}}\\).)",
+    "options": [
+      "8.05 g",
+      "4.02 g",
+      "16.10 g",
+      "0.805 g"
+    ],
+    "correct": "A",
+    "solution": "Use \\(m=\\dfrac{I t M}{nF}\\).",
+    "solution_steps": [
+      "Step 1: Compute charge \\(Q=I\\,t=2.0\\,\\mathrm{A}\\times3600\\,\\mathrm{s}=7200\\,\\mathrm{C}.\\)",
+      "Step 2: For Ag, \\(n=1\\). So \\(m=\\dfrac{7200\\times107.87}{1\\times96500}=8.0483\\) g.",
+      "Step 3: Rounded → \\(8.05\\) g."
+    ]
+  },
+  {
+    "id": "q5",
+    "text": "How long will a current of 0.50 A take to deposit 1.00 g of copper (Cu, M = 63.546 g mol⁻¹, valency = 2)? (Use \\(F=96500\\ \\mathrm{C\\,mol^{-1}}\\).)",
+    "options": [
+      "100 min",
+      "101.2 min",
+      "120 min",
+      "60 min"
+    ],
+    "correct": "B",
+    "solution": "Rearrange \\(m=\\dfrac{I t M}{nF}\\) to \\(t=\\dfrac{m n F}{I M}\\).",
+    "solution_steps": [
+      "Step 1: Substitute values: \\(t=\\dfrac{1.00\\times2\\times96500}{0.50\\times63.546}=6074.34\\) s.",
+      "Step 2: Convert to minutes: \\(6074.34/60=101.239\\) min.",
+      "Step 3: Rounded → \\(101.2\\) min."
+    ]
+  },
+  {
+    "id": "q6",
+    "text": "A current of 5.0 A is passed through acidified water for 10 minutes. What volume of hydrogen gas (H₂) will be liberated at STP? (Use \\(F=96500\\ \\mathrm{C\\,mol^{-1}}\\); 1 mol gas at STP = 22.4 L.)",
+    "options": [
+      "0.348 L",
+      "0.700 L",
+      "0.174 L",
+      "3.48 L"
+    ],
+    "correct": "A",
+    "solution": "For H₂: Reaction needs 2 electrons per mole H₂, so \\(n=2\\). First find charge \\(Q=I t\\), then moles \\(=Q/(nF)\\), then volume = moles × 22.4 L.",
+    "solution_steps": [
+      "Step 1: \\(Q=5.0\\,\\mathrm{A}\\times600\\,\\mathrm{s}=3000\\,\\mathrm{C}.\\)",
+      "Step 2: Moles H₂ = \\(3000/(2\\times96500)=0.015544\\) mol.",
+      "Step 3: Volume = \\(0.015544\\times22.4=0.3482\\) L → Rounded = \\(0.348\\) L."
+    ]
+  },
+  {
+    "id": "q7",
+    "text": "Using the same conditions as Q6 (5.0 A for 10 min), what volume of oxygen (O₂) will be liberated at the anode at STP?",
+    "options": [
+      "0.174 L",
+      "0.348 L",
+      "0.870 L",
+      "1.74 L"
+    ],
+    "correct": "A",
+    "solution": "For O₂ formation from water/oxide, 4 electrons are required per mole O₂ (n = 4). Compute moles as \\(Q/(4F)\\), then multiply by 22.4 L.",
+    "solution_steps": [
+      "Step 1: Charge \\(Q=3000\\) C (same as Q6).",
+      "Step 2: Moles O₂ = \\(3000/(4\\times96500)=0.007772\\) mol.",
+      "Step 3: Volume = \\(0.007772\\times22.4=0.1741\\) L → Rounded = \\(0.174\\) L."
+    ]
+  },
+  {
+    "id": "q8",
+    "text": "If a charge equal to one Faraday (96500 C) is passed through separate solutions of Ag⁺ (n = 1) and Cu²⁺ (n = 2), what is the ratio of masses Ag : Cu deposited?",
+    "options": [
+      "3.40 : 1",
+      "2 : 1",
+      "4 : 1",
+      "1 : 1"
+    ],
+    "correct": "A",
+    "solution": "Mass deposited with 1 F equals equivalent mass: mass = M/n. Ratio = (M_Ag/1) : (M_Cu/2).",
+    "solution_steps": [
+      "Step 1: M_Ag = 107.87 g mol⁻¹ → M_Ag/1 = 107.87.",
+      "Step 2: M_Cu = 63.546 g mol⁻¹ → M_Cu/2 = 31.773.",
+      "Step 3: Ratio = 107.87 : 31.773 = 3.395 ≈ 3.40 : 1."
+    ]
+  },
+  {
+    "id": "q9",
+    "text": "The equivalent weight of aluminium (Al, M = 26.982 g mol⁻¹, valency = 3) is:",
+    "options": [
+      "8.994 g per equivalent",
+      "13.491 g per equivalent",
+      "26.982 g per equivalent",
+      "3.000 g per equivalent"
+    ],
+    "correct": "A",
+    "solution": "Equivalent weight = M / valency = \\(26.982 / 3 = 8.994\\) g per equivalent."
+  },
+  {
+    "id": "q10",
+    "text": "How much electrical charge (in coulombs) is required to deposit 1.00 mole of silver (Ag, n = 1)?",
+    "options": [
+      "96500 C",
+      "193000 C",
+      "48250 C",
+      "1.00 C"
+    ],
+    "correct": "A",
+    "solution": "To deposit 1 mole of Ag (n = 1) requires 1 mole of electrons, i.e. 1 Faraday = \\(F = 96500\\) C."
+  },
+  {
+    "id": "q11",
+    "text": "Which is the accepted numerical value of Faraday constant used in quantitative electrolysis calculations?",
+    "options": [
+      "96500 C mol⁻¹",
+      "1.602 × 10⁻¹⁹ C",
+      "8.314 J mol⁻¹ K⁻¹",
+      "22.4 L mol⁻¹"
+    ],
+    "correct": "A",
+    "solution": "Faraday constant \\(F\\) is the charge of one mole of electrons: approximately \\(96500\\ \\mathrm{C\\,mol^{-1}}\\). (Option B is charge of one electron.)"
+  },
+  {
+    "id": "q12",
+    "text": "If 193000 C (i.e. 2F) of charge passes through molten alumina, how many grams of aluminium (Al, M = 26.982 g mol⁻¹, n = 3) are produced?",
+    "options": [
+      "17.99 g",
+      "35.98 g",
+      "8.994 g",
+      "53.97 g"
+    ],
+    "correct": "A",
+    "solution": "Use \\(m=\\dfrac{Q M}{nF}\\).",
+    "solution_steps": [
+      "Step 1: \\(Q=193000\\) C, \\(M=26.982\\) g mol⁻¹, \\(n=3\\).",
+      "Step 2: \\(m=\\dfrac{193000\\times26.982}{3\\times96500}=17.988\\) g.",
+      "Step 3: Rounded → \\(17.99\\) g."
+    ]
+  },
+  {
+    "id": "q13",
+    "text": "When 193000 C of charge is passed through molten NaCl, how many litres of Cl₂ (g) are produced at STP? (Cl₂ needs 2 electrons per molecule; use 22.4 L mol⁻¹.)",
+    "options": [
+      "22.4 L",
+      "11.2 L",
+      "44.8 L",
+      "2.24 L"
+    ],
+    "correct": "A",
+    "solution": "Moles Cl₂ = \\(Q/(2F)\\). For \\(Q=193000\\) C: moles = \\(193000/(2\\times96500)=1\\) mol → Volume = \\(1\\times22.4=22.4\\) L."
+  },
+  {
+    "id": "q14",
+    "text": "For electrolysis at constant current, the plot of mass deposited (m) vs time (t) is a straight line. The slope (dm/dt) equals:",
+    "options": [
+      "$\\dfrac{I\\,M}{nF}$",
+      "$\\dfrac{M}{n}$",
+      "$\\dfrac{I}{nF}$",
+      "$\\dfrac{nF}{I\\,M}$"
+    ],
+    "correct": "A",
+    "solution": "From \\(m=\\dfrac{I t M}{nF}\\) → slope = dm/dt = \\(\\dfrac{I M}{nF}\\). Units: g s⁻¹."
+  },
+  {
+    "id": "q15",
+    "text": "Equal quantities of electricity are passed through Ag⁺ and Cu²⁺ solutions. If 1.08 g of Cu is deposited, how many grams of Ag will be deposited? (Use M_Ag = 107.87 g mol⁻¹, M_Cu = 63.546 g mol⁻¹.)",
+    "options": [
+      "3.67 g",
+      "1.08 g",
+      "0.32 g",
+      "4.50 g"
+    ],
+    "correct": "A",
+    "solution": "By Faraday's second law: masses ∝ (M/n). For same Q: \\(m_{Ag}/m_{Cu}=(M_{Ag}/1)/(M_{Cu}/2)\\).",
+    "solution_steps": [
+      "Step 1: Compute ratio = \\(\\dfrac{107.87/1}{63.546/2}=3.3950\\).",
+      "Step 2: So \\(m_{Ag}=m_{Cu}\\times3.3950=1.08\\times3.3950=3.6666\\) g.",
+      "Step 3: Rounded → \\(3.67\\) g."
+    ]
+  }
+]
+
+;
+
+
+
+let student = '';
+let timerHandle;
+let printMode = '';
+let examDateTime = '';
+
+const quizTitle = document.title.split("Quiz")[1]?.trim() || document.title;
+
+function startQuiz() {
+  const name = document.getElementById('studentNameInput').value.trim();
+  if (!name) { alert('Please enter your name.'); return; }
+  student = name;
+  examDateTime = new Date().toLocaleString();
+  document.getElementById('name-container').style.display = 'none';
+  document.getElementById('quiz-container').style.display = 'block';
+  buildQuestions();
+  if (window.MathJax) MathJax.typesetPromise();
+  startTimer();
+}
+
+function buildQuestions() {
+  const out = document.getElementById('questions-container');
+  out.innerHTML = '';
+
+  Q.forEach((q, index) => {
+    const qText = q.text || q.question || q.prompt || ''; // tolerate different keys
+
+    // Normalize options into an ordered array of [letter, optionText]
+    let entries = [];
+    if (Array.isArray(q.options)) {
+      entries = q.options.map((opt, i) => [String.fromCharCode(65 + i), opt]);
+    } else if (q.options && typeof q.options === 'object') {
+      const keys = Object.keys(q.options);
+      const keysAreLetters = keys.every(k => /^[A-Z]$/.test(k));
+      if (keysAreLetters) {
+        keys.sort();
+        entries = keys.map(k => [k, q.options[k]]);
+      } else {
+        entries = keys.map((k, i) => [String.fromCharCode(65 + i), q.options[k]]);
+      }
+    }
+
+    const optionsHTML = entries.map(([letter, opt]) => {
+      return `<label class="option-item" for="${q.id}-${letter}">
+                <input type="radio" id="${q.id}-${letter}" name="${q.id}" value="${letter}" onchange="enableSubmit('${q.id}')">
+                ${letter}. ${opt}
+              </label>`;
+    }).join('');
+
+    const imageHTML = q.image ? `<div><img src="${q.image}" alt="figure" style="max-width:360px; margin:10px 0; display:block;"></div>` : '';
+
+    // Handle solution steps if they exist
+let solutionStepsHTML = '';
+if (q.solution_steps && Array.isArray(q.solution_steps) && q.solution_steps.length > 0) {
+  solutionStepsHTML = '<ul style="margin-top:10px;">' +
+    q.solution_steps.map(step => {
+      if (step.includes("\n")) {
+        return `<li><pre style="background:#111; padding:6px; border-radius:4px; overflow-x:auto;">${step}</pre></li>`;
+      }
+      return `<li>${step}</li>`;
+    }).join('') +
+    '</ul>';
+}
+
+
+    out.insertAdjacentHTML('beforeend', `
+      <div class="question" id="${q.id}-wrap">
+        <h3>Q${index + 1}. ${qText}</h3>
+        ${imageHTML}
+        <div class="options">${optionsHTML}</div>
+        <div id="${q.id}-buttons">
+          <button id="sub-${q.id}" class="submit-button" disabled onclick="grade('${q.id}')">Submit</button>
+          <button class="dontknow-button" onclick="skip('${q.id}')">I Don’t Know</button>
+        </div>
+        <button class="toggle-button" id="btn-sol-${q.id}" style="display:none;" onclick="toggleSolution('sol-${q.id}')">Show Solution</button>
+        <div class="solution" id="sol-${q.id}">
+          <strong>Solution:</strong> ${q.solution || ''} ${solutionStepsHTML}
+        </div>
+      </div>
+    `);
+  });
+
+  if (window.MathJax && typeof MathJax.typesetPromise === 'function') MathJax.typesetPromise();
+}
+
+
+
+function enableSubmit(qid) { document.getElementById(`sub-${qid}`).disabled = false; }
+
+function grade(qid) {
+  const q = Q.find(x => x.id === qid);
+  // accept different possible field names for the correct answer
+  const correct = q.correct || q.answer || q.key || q.correctAnswer;
+  const chosen = document.querySelector(`input[name="${qid}"]:checked`);
+  if (!chosen) return;
+
+  // lock options
+  document.querySelectorAll(`input[name="${qid}"]`).forEach(i => i.disabled = true);
+
+  // the chosen label
+  const chosenLabel = chosen.closest('label.option-item');
+
+  // find input that matches the correct letter
+  const correctInput = document.querySelector(`input[name="${qid}"][value="${correct}"]`);
+  const correctLabel = correctInput ? correctInput.closest('label.option-item') : null;
+
+  if (chosen.value === correct) {
+    // correct
+    if (chosenLabel) {
+      chosenLabel.style.background = '#28a745';
+      chosenLabel.style.color = '#fff';
+    }
+  } else {
+    // wrong: mark chosen red, mark correct green (if found)
+    if (chosenLabel) {
+      chosenLabel.style.background = '#dc3545';
+      chosenLabel.style.color = '#fff';
+    }
+    if (correctLabel) {
+      correctLabel.style.background = '#28a745';
+      correctLabel.style.color = '#fff';
+    }
+  }
+
+  // show solution immediately
+  const solElem = document.getElementById(`sol-${qid}`);
+  if (solElem) solElem.style.display = "block";
+
+  // hide the buttons for this question
+  const buttons = document.getElementById(`${qid}-buttons`);
+  if (buttons) buttons.style.display = "none";
+  const btnSol = document.getElementById(`btn-sol-${q.id}`);
+  if (btnSol) btnSol.style.display = "none";
+
+  // re-typeset MathJax for solution if it contains LaTeX
+  if (window.MathJax && typeof MathJax.typesetPromise === 'function') MathJax.typesetPromise();
+}
+
+
+function skip(qid) { document.querySelectorAll(`input[name="${qid}"]`).forEach(r => r.disabled = true); showSolutionButton(qid); }
+function showSolutionButton(qid) { document.getElementById(`btn-sol-${qid}`).style.display = 'inline-block'; document.getElementById(`${qid}-buttons`).style.display = 'none'; }
+function toggleSolution(id) { const elem = document.getElementById(id); elem.style.display = elem.style.display === 'block' ? 'none' : 'block'; }
+
+function startTimer() {
+  const display = document.getElementById('timer');
+  const started = Date.now();
+  timerHandle = setInterval(() => { const s = Math.floor((Date.now() - started) / 1000); display.textContent = `${String((s / 60) | 0).padStart(2,'0')}:${String(s % 60).padStart(2,'0')}`; }, 1000);
+}
+
+function finalSubmit() {
+  clearInterval(timerHandle);
+  document.querySelectorAll("input[type=radio]").forEach(r => r.disabled = true);
+  document.querySelectorAll(".submit-button, .dontknow-button").forEach(btn => btn.style.display = "none");
+
+  let totalMarks = 0;
+  let negativeMarks = 0;
+  let possibleMarks = Q.length * 4;
+  let detailHTML = '';
+
+  Q.forEach((q, index) => {
+    const checked = document.querySelector(`input[name="${q.id}"]:checked`);
+    const chosen = checked ? checked.value : null;
+
+    const correctLetter = q.correct || q.answer || q.key || q.correctAnswer;
+
+    let marks = 0;
+    let resultText = "";
+
+    if (chosen === null) {
+      marks = 0;
+      resultText = "⚪ Not Attempted / I Don’t Know (0)";
+    } else if (chosen === correctLetter) {
+      marks = 4;
+      resultText = "✅ Correct (+4)";
+    } else {
+      marks = -1;
+      resultText = "❌ Incorrect (-1)";
+    }
+
+    totalMarks += marks > 0 ? marks : 0;
+    negativeMarks += marks < 0 ? marks : 0;
+
+    let solutionStepsHTML = '';
+    if (q.solution_steps && Array.isArray(q.solution_steps) && q.solution_steps.length > 0) {
+      solutionStepsHTML = '<ul style="margin-top:5px;">' +
+        q.solution_steps.map(step => `<li>${step}</li>`).join('') +
+        '</ul>';
+    }
+
+    detailHTML += `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${q.text || q.question}</td>
+        <td>${chosen || 'Not Answered'}</td>
+        <td>${correctLetter}</td>
+        <td>${resultText}</td>
+        <td>${q.solution || ''}${solutionStepsHTML}</td>
+        <td>${marks}</td>
+      </tr>`;
+  });
+
+  const finalScore = totalMarks + negativeMarks;
+
+  document.getElementById('scoreText').innerHTML = `${student}, here is your result:`;
+  document.getElementById('scoreDetails').innerHTML = detailHTML;
+
+  const summaryHTML = `
+    <div style="margin-top:20px; font-weight:bold;">
+      <p>Total Marks (Possible): ${possibleMarks}</p>
+      <p>Total Marks (Correct Answers): ${totalMarks}</p>
+      <p>Negative Marks (Wrong Answers): ${negativeMarks}</p>
+      <p>Final Score: ${finalScore}</p>
+    </div>
+  `;
+  document.getElementById('scorecard').insertAdjacentHTML('beforeend', summaryHTML);
+
+  document.getElementById('scorecard').style.display = 'block';
+  document.getElementById('printScoreBtn').style.display = 'inline-block';
+  document.getElementById('shareWhatsappBtn').style.display = 'inline-block';
+
+  if (window.MathJax && typeof MathJax.typesetPromise === 'function') MathJax.typesetPromise();
+}
+
+
+
+
+
+
+function printQuestions() { printMode = "questions"; window.print(); }
+function printScorecard() { document.getElementById("studentPrintName").innerText = student; document.getElementById("examDateTime").innerText = "Exam Date & Time: " + examDateTime; printMode = "scorecard"; window.print(); }
+
+window.addEventListener('beforeprint', () => {
+  if (printMode === "questions") { document.querySelector("#questions-container").style.display = "block"; document.querySelector("#scorecard").style.display = "none"; document.querySelector("#logo").style.display = "none"; document.querySelector("#name-container").style.display = "none"; document.querySelector("#timer").style.display = "none"; document.querySelector("#studentPrintName").style.display = "none"; document.querySelector("#examDateTime").style.display = "none"; }
+  if (printMode === "scorecard") { document.querySelector("#questions-container").style.display = "none"; document.querySelector("#scorecard").style.display = "block"; document.querySelector("#logo").style.display = "block"; document.querySelector("#name-container").style.display = "none"; document.querySelector("#studentPrintName").style.display = "block"; document.querySelector("#examDateTime").style.display = "block"; }
+});
+window.addEventListener('afterprint', () => { document.querySelector("#questions-container").style.display = ""; document.querySelector("#scorecard").style.display = ""; document.querySelector("#logo").style.display = ""; document.querySelector("#name-container").style.display = ""; document.querySelector("#timer").style.display = ""; document.querySelector("#studentPrintName").style.display = "none"; document.querySelector("#examDateTime").style.display = "none"; });
+
+
+
+
+document.getElementById("shareWhatsappBtn").addEventListener("click", function () {
+  const whatsappNumber = "9108069409455";
+
+  if (!student) {
+    alert("Please complete the quiz first.");
+    return;
+  }
+
+  const scoreText = document.getElementById('scoreText').innerText || "Result not available";
+
+  let totalMarks = 0;
+  let negativeMarks = 0;
+  let possibleMarks = Q.length * 4;
+
+  let details = "";
+
+  Q.forEach((q, i) => {
+    const qNum = i + 1;
+    const checked = document.querySelector(`input[name="${q.id}"]:checked`);
+    let userAns = checked ? checked.value : null;
+    const correctAns = q.correct || q.answer || q.key || q.correctAnswer;
+
+    let marks = 0;
+    let resultText = "";
+
+    if (userAns === null) {
+      marks = 0;
+      resultText = "⚪ Not Attempted / I Don’t Know (0)";
+      userAns = "Not Answered";
+    } else if (userAns === correctAns) {
+      marks = 4;
+      resultText = "✅ Correct (+4)";
+    } else {
+      marks = -1;
+      resultText = "❌ Incorrect (-1)";
+    }
+
+    totalMarks += marks > 0 ? marks : 0;
+    negativeMarks += marks < 0 ? marks : 0;
+
+    details += `Q${qNum} → ${resultText} (Your Ans: ${userAns} | Correct: ${correctAns})\n`;
+  });
+
+  const finalScore = totalMarks + negativeMarks;
+
+  const message = `Sir, I have shared my Test Result for checking. Thank you!\n\n📘 Quiz Title: ${quizTitle}\n👤 Student: ${student}\n\n${scoreText}\n\n📊 Summary:\n✔ Total Marks (Possible): ${possibleMarks}\n✔ Total Marks (Correct Answers): ${totalMarks}\n✔ Negative Marks (Wrong Answers): ${negativeMarks}\n✔ Final Score: ${finalScore}\n\nDetails:\n${details}`;
+
+  const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  window.open(waUrl, "_blank");
+});
+
+
+const reportBtn = document.getElementById("reportBtn");
+const reportModal = document.getElementById("reportModal");
+const sendReport = document.getElementById("sendReport");
+const closeReport = document.getElementById("closeReport");
+const reportMsg = document.getElementById("reportMsg");
+
+reportBtn.onclick = () => { reportModal.style.display = "block"; };
+closeReport.onclick = () => { reportModal.style.display = "none"; reportMsg.value = ""; };
+sendReport.onclick = () => {
+  const msg = reportMsg.value.trim();
+  if (!msg) { alert("Please write your message before sending."); return; }
+  const whatsappNumber = "9108069409455";
+  const message = `⚠️ Reported Mistake\n\n📘 Quiz Title: ${quizTitle}\n👤 Student: ${student || "Anonymous"}\n\n📝 Message:\n${msg}`;
+  const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  window.open(waUrl, "_blank");
+  reportModal.style.display = "none";
+  reportMsg.value = "";
+};
+</script>
+
+</body>
+</html>
