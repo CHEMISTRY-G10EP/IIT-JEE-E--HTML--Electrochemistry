@@ -109,16 +109,7 @@
 <script>
 
 
-const Q = window.MathJax = {
-  tex: {
-    inlineMath: [['\\(','\\)'], ['$', '$']], 
-    displayMath: [['$$','$$'], ['\\[','\\]']],
-    processEscapes: true
-  },
-  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
-};
-
-const quiz = [
+const Q = [
   {
     "id": "q1",
     "text": "The transport number (or transference number) of an ion is defined as:",
@@ -617,4 +608,5 @@ sendReport.onclick = () => {
 
 </body>
 </html>
+
 
